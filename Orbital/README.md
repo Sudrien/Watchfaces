@@ -1,4 +1,7 @@
 # Orbital watch face
+A watchface showing the time and date in circles
+
+![Screenshots](./anim.gif)
 
 ## Origin
 First and foremost, this watch face is an evolution of another watch face, https://github.com/Sudrien/watchy_orbital.
@@ -27,6 +30,10 @@ But its necessity to use a custom build of the Watchy lib irked me, and I wanted
 6. black on white, no details, 24h
 7. black on white, details, 12h
 8. black on white, details, 24h
+
+See the below screenshot for an explanation of everything on the watchface (the mode used in this screenshot is the third)
+
+![Explanations](./explanation.png)
 
 ## How to use/install
 ### Settings
