@@ -71,7 +71,9 @@ void WatchyOrbital::drawWatchMinute() {
     fillArc2(minuteAngle + (details?2*tick:tick), 360 - tick, 85, 7, secondaryColor, tick);
     
     if(details){
-        drawDetails(minuteAngle, 88, String(currentTime.Minute));
+        char minuteBuffer[3];
+        sprintf(minuteBuffer, "%02d", currentTime.Minute);
+        drawDetails(minuteAngle, 88 - 13 / 2, minuteBuffer);
     }
 }
 
@@ -101,7 +103,9 @@ void WatchyOrbital::drawWatchHour() {
     fillArc2(hourAngle + tick, 360 - tick, 64, 8, secondaryColor, tick);
     
     if(details){
-        drawDetails(hourAngle, 68, String(currentTime.Hour));
+        char hourBuffer[3];
+        sprintf(hourBuffer, "%02d", currentTime.Hour);
+        drawDetails(hourAngle, 68 - 15 / 2, hourBuffer);
     }
 }
 
@@ -124,7 +128,9 @@ void WatchyOrbital::drawWatchDay() {
     }
     
     if(details){
-        drawDetails(dayAngle, 42, String(currentTime.Day));
+        char dayBuffer[3];
+        sprintf(dayBuffer, "%02d", currentTime.Day);
+        drawDetails(dayAngle, 42 - 15 / 2, dayBuffer);
     }
 }
 
@@ -147,7 +153,9 @@ void WatchyOrbital::drawWatchMonth() {
     }
     
     if(details){
-        drawDetails(monthAngle, 22, shortMonths[currentTime.Month-1]);
+        char monthBuffer[3];
+        sprintf(monthBuffer, "%02d", shortMonths[currentTime.Month-1]);
+        drawDetails(monthAngle,  22 - 17 / 2, monthBuffer);
     }
 }
 
@@ -446,24 +454,39 @@ void WatchyOrbital::fillEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, 
 }
 
 
-void WatchyOrbital::drawDetails(float angle, unsigned int radius, String value){
+void WatchyOrbital::drawDetails(float angle, unsigned int radius, char *value){
     unsigned int center_x = 100;
     unsigned int center_y = 100;
-    /*int16_t x1;
+display.setTextWrap(false); // fix getTextBounds at right edge of screen - does not fix bottom?
+
+    int16_t x1;
     int16_t y1;
     uint16_t width;
     uint16_t height;
-    display.getTextBounds(value, 0, 0, &x1, &y1, &width, &height);*/
+    display.getTextBounds(value, 100, 100, &x1, &y1, &width, &height);
+
+    display.setFont(&FreeSansBold9pt7b);
+
+ /*   display.fillCircle(
+      floor(center_x + radius * sin(.2 + angle * DEG2RAD + atan( width / (radius * 2.0)))),
+      floor(center_y - radius * cos(.2 + angle * DEG2RAD + atan( width / (radius * 2.0)))),
+      height / 2.0,
+      GxEPD_WHITE
+    );*/
+
+    display.setCursor(
+      floor(center_x + radius * sin( angle * DEG2RAD + atan( width / (radius * 2.0) ))) - width / 2,
+      floor(center_y - radius * cos( angle * DEG2RAD + atan( width / (radius * 2.0) ))) + height / 2
+      );
+
     
-    float x = center_x + radius * cos((angle - 90) * DEG2RAD);
-    float y = center_y + radius * sin((angle - 90) * DEG2RAD);
-    
-    x = x + 3 + 7*(sin((angle + 90.0)*DEG2RAD) - 1);
-    y = y + 2 + 9*(sin((180-angle)*DEG2RAD) - 0.5);
-    
-    display.setFont();
-    display.setCursor(x, y);
-    display.print(value);
+    display.getTextBounds(value, 
+      floor(center_x + radius * sin( angle * DEG2RAD + atan( width / (radius * 2.0) ))) - width / 2,
+      floor(center_y - radius * cos( angle * DEG2RAD + atan( width / (radius * 2.0) ))) + height / 2
+      , &x1, &y1, &width, &height);
+
+    display.drawRect(x1, y1, width, height, GxEPD_WHITE);
+   // display.print(value);
 }
 
 

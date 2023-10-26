@@ -42,6 +42,6 @@ class WatchyOrbital : public Watchy{
         unsigned int DaysPerMonth(unsigned int, unsigned int);
         void drawEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, uint16_t color); // https://github.com/adafruit/Adafruit-GFX-Library/pull/217
         void fillEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, uint16_t color); // gpt4
-        void drawDetails(float angle, unsigned int radius, String value);
+        void drawDetails(float angle, unsigned int radius, char *value);
   };
 #endif
